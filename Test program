@@ -16,7 +16,7 @@ void setup() {
 void loop() {
   myservo.attach(i); 
   if(i == 7){
-  i = 13;
+      i = 13;
   }
       i --;
       for (pos = 0; pos <= 180; pos += 1) { // goes from 0 degrees to 180 degrees
