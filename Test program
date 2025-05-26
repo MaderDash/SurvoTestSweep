@@ -1,31 +1,49 @@
-/* Sweep
-By maderdash and GTF-Engeneering Streaming agency inc.
+/*
+  Sweep Servo Program
+  By maderdash updated 5-26-2025
+
+  This program sweeps a servo motor back and forth between 0 and 180 degrees.
+  The servo is attached to pins 2 through 13 in sequence.
+  For each pin, the program prints a message to the Serial Monitor indicating which servo is being tested,
+  sweeps the servo from 0 to 180 degrees and back, then moves to the next pin.
 */
 
 #include <Servo.h>
 
-Servo myservo;  // create servo object to control a servo
-// twelve servo objects can be created on most boards
+Servo myservo;
+int pos = 0;
+int pin = 2;
 
-int pos = 0;    // variable to store the servo position
-int i = 14;
 void setup() {
-   // attaches the servo on pin 9 to the servo object
+  Serial.begin(9600);
+  Serial.println("Servo sweep test starting...");
 }
 
 void loop() {
-  myservo.attach(i); 
-  if(i == 7){
-      i = 13;
-  }
-      i --;
-      for (pos = 0; pos <= 180; pos += 1) { // goes from 0 degrees to 180 degrees
-        // in steps of 1 degree
-        myservo.write(pos);              // tell servo to go to position in variable 'pos'
-        delay(15);                       // waits 15ms for the servo to reach the position
-      }
-      for (pos = 180; pos >= 0; pos -= 1) { // goes from 180 degrees to 0 degrees
-        myservo.write(pos);              // tell servo to go to position in variable 'pos'
-        delay(15);                       // waits 15ms for the servo to reach the position
-      }
+  for (pin = 2; pin <= 13; pin++) {
+    Serial.print("Testing servo on pin ");
+    Serial.println(pin);
+
+    myservo.attach(pin);
+
+    for (pos = 0; pos <= 180; pos++) {
+      myservo.write(pos);
+      delay(15);
     }
+
+    for (pos = 180; pos >= 0; pos--) {
+      myservo.write(pos);
+      delay(15);
+    }
+
+    myservo.detach();
+    delay(500);
+
+    Serial.print("Finished testing servo on pin ");
+    Serial.println(pin);
+    Serial.println("-----------------------------");
+  }
+
+  Serial.println("All servos tested. Restarting in 3 seconds...");
+  delay(3000);
+}
